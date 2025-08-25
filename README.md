@@ -109,6 +109,22 @@ NODE_ENV=development
 - Voter contact management
 - Analytics and reporting
 
+### Voter Management Endpoints
+
+- `POST /api/voters` - Create new voter
+- `GET /api/voters` - Search and filter voters
+- `GET /api/voters/:id` - Get voter by ID
+- `GET /api/voters/phone/:phoneNumber` - Get voter by phone
+- `GET /api/voters/booth/:boothNumber` - Get voters by booth
+- `GET /api/voters/constituency/:constituency` - Get voters by constituency
+- `PUT /api/voters/:id` - Update voter
+- `DELETE /api/voters/:id` - Delete voter (soft delete)
+- `POST /api/voters/:id/campaigns/:campaignId` - Add voter to campaign
+- `PUT /api/voters/:id/campaigns/:campaignId/contact-status` - Update contact status
+- `POST /api/voters/:id/opt-out` - Opt out voter
+- `GET /api/voters/statistics` - Get voter statistics
+- `POST /api/voters/bulk-import` - Bulk import voters
+
 ## 🛠️ Development
 
 ### Code Style
@@ -122,6 +138,23 @@ NODE_ENV=development
 
 1. Create new TypeScript files in the `src/` directory
 2. Follow the established project structure
+
+### Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Test specific components
+npm run test:user      # Test User model
+npm run test:auth      # Test Authentication system
+npm run test:voter     # Test Voter Management system
+npm run test:db        # Test database connection
+```
+
 3. Update this README with new endpoints/features
 4. Test thoroughly before committing
 

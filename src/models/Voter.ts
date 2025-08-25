@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
 // Define the Voter document interface optimized for campaign messaging
 export interface VoterDocument extends Document {
@@ -50,6 +50,11 @@ export interface VoterDocument extends Document {
     createdAt: Date;
     updatedAt: Date;
     lastActivityDate: Date;        // Last time any action was taken
+
+    // Instance methods
+    addCampaign(campaignId: string): Promise<VoterDocument>;
+    updateContactStatus(campaignId: string, responseStatus: string, notes?: string): Promise<VoterDocument>;
+    optOut(): Promise<VoterDocument>;
 }
 
 const VoterSchema = new Schema({
@@ -357,5 +362,13 @@ VoterSchema.methods.optOut = function () {
     return this.save();
 };
 
-// Export the model
-export const Voter = mongoose.model<VoterDocument>('Voter', VoterSchema); 
+// Interface for Voter static methods
+export interface VoterModel extends Model<VoterDocument> {
+    findByBooth(boothNumber: string, constituency?: string): Promise<VoterDocument[]>;
+    findByPhone(phoneNumber: string): Promise<VoterDocument | null>;
+    findContactableForCampaign(campaignId: string, constituency?: string): Promise<VoterDocument[]>;
+    findByConstituency(constituency: string, options?: any): Promise<VoterDocument[]>;
+}
+
+// Export the model with proper typing
+export const Voter = mongoose.model<VoterDocument, VoterModel>('Voter', VoterSchema); 

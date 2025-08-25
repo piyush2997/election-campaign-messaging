@@ -7,6 +7,7 @@ import { database } from "./config/database";
 // Import routes
 import authRoutes from './routes/auth';
 import dashboardRoutes from './routes/dashboard';
+import voterRoutes from './routes/voters';
 
 // Initialize environment configuration
 EnvConfig.init();
@@ -51,6 +52,7 @@ app.get("/health", async (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/voters', voterRoutes);
 
 const PORT = EnvConfig.getPort();
 Logger.info(`Environment: ${EnvConfig.getEnvironment()}`);
