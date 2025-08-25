@@ -22,13 +22,13 @@ const CampaignSchema = new Schema({
         type: String,
         required: [true, 'Campaign name is required'],
         trim: true,
-        maxlength: [200, 'Campaign name cannot exceed 200 characters']
+        maxLength: [200, 'Campaign name cannot exceed 200 characters']
     },
     description: {
         type: String,
         required: [true, 'Campaign description is required'],
         trim: true,
-        maxlength: [1000, 'Campaign description cannot exceed 1000 characters']
+        maxLength: [1000, 'Campaign description cannot exceed 1000 characters']
     },
     startDate: {
         type: Date,

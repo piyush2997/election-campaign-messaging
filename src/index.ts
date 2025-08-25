@@ -1,10 +1,18 @@
 import express from "express";
 import cors from "cors";
 import { EnvConfig } from "./config/EnvConfig";
+import { Logger } from "./config/logger";
 import { database } from "./config/database";
+
+// Import routes
+import authRoutes from './routes/auth';
+import dashboardRoutes from './routes/dashboard';
 
 // Initialize environment configuration
 EnvConfig.init();
+
+// Initialize logger
+Logger.initialize();
 
 const app = express();
 
@@ -40,9 +48,13 @@ app.get("/health", async (req, res) => {
     }
 });
 
+// API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+
 const PORT = EnvConfig.getPort();
-console.log(`Environment: ${EnvConfig.getEnvironment()}`);
-console.log(`Server starting on port: ${PORT}`);
+Logger.info(`Environment: ${EnvConfig.getEnvironment()}`);
+Logger.info(`Server starting on port: ${PORT}`);
 
 // Start server and connect to database
 async function startServer() {
@@ -52,12 +64,12 @@ async function startServer() {
 
         // Start the server
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-            console.log(`📊 Database: ${database.getConnectionStatus()}`);
+            Logger.info(`🚀 Server running on port ${PORT}`);
+            Logger.info(`📊 Database: ${database.getConnectionStatus()}`);
         });
 
     } catch (error) {
-        console.error('Failed to start server:', error);
+        Logger.error('Failed to start server:', error);
         process.exit(1);
     }
 }

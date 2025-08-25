@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { CampaignStatus } from '../types';
 
 // Define the Voter document interface optimized for campaign messaging
 export interface VoterDocument extends Document {

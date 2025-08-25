@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { EnvConfig } from './EnvConfig';
+import { Logger } from './logger';
 
 export class Database {
     private static instance: Database;
@@ -19,26 +20,25 @@ export class Database {
      */
     public async connect(): Promise<void> {
         if (this.isConnected) {
-            console.log('Database is already connected');
+            Logger.info('Database is already connected');
             return;
         }
 
         try {
             const mongoUri = this.getMongoUri();
             const options = this.getConnectionOptions();
-
-            console.log(`Connecting to MongoDB: ${mongoUri.replace(/\/\/.*@/, '//***:***@')}`);
+            Logger.info(`Connecting to MongoDB: ${mongoUri.replace(/\/\/.*@/, '//***:***@')}`);
 
             await mongoose.connect(mongoUri, options);
 
             this.isConnected = true;
-            console.log('✅ MongoDB connected successfully');
+            Logger.info('✅ MongoDB connected successfully');
 
             // Handle connection events
             this.setupConnectionHandlers();
 
         } catch (error) {
-            console.error('❌ MongoDB connection failed:', error);
+            Logger.error('❌ MongoDB connection failed:', error);
             this.isConnected = false;
             throw error;
         }
@@ -49,16 +49,16 @@ export class Database {
      */
     public async disconnect(): Promise<void> {
         if (!this.isConnected) {
-            console.log('Database is not connected');
+            Logger.info('Database is not connected');
             return;
         }
 
         try {
             await mongoose.disconnect();
             this.isConnected = false;
-            console.log('✅ MongoDB disconnected successfully');
+            Logger.info('✅ MongoDB disconnected successfully');
         } catch (error) {
-            console.error('❌ MongoDB disconnection failed:', error);
+            Logger.error('❌ MongoDB disconnection failed:', error);
             throw error;
         }
     }
@@ -110,33 +110,31 @@ export class Database {
         const connection = mongoose.connection;
 
         connection.on('connected', () => {
-            console.log('MongoDB connection established');
+            Logger.info('MongoDB connection established');
         });
 
         connection.on('error', (error) => {
-            console.error('MongoDB connection error:', error);
+            Logger.error('MongoDB connection error:', error);
             this.isConnected = false;
         });
 
         connection.on('disconnected', () => {
-            console.log('MongoDB connection disconnected');
+            Logger.info('MongoDB connection disconnected');
             this.isConnected = false;
         });
 
         connection.on('reconnected', () => {
-            console.log('MongoDB connection reestablished');
+            Logger.info('MongoDB connection reestablished');
             this.isConnected = true;
         });
 
         // Handle process termination
         process.on('SIGINT', async () => {
-            console.log('Received SIGINT, closing MongoDB connection...');
             await this.disconnect();
             process.exit(0);
         });
 
         process.on('SIGTERM', async () => {
-            console.log('Received SIGTERM, closing MongoDB connection...');
             await this.disconnect();
             process.exit(0);
         });
@@ -180,7 +178,7 @@ export class Database {
                 indexSize: stats.indexSize
             };
         } catch (error) {
-            console.error('Failed to get database stats:', error);
+            Logger.error('Failed to get database stats:', error);
             throw error;
         }
     }

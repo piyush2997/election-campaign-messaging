@@ -1,5 +1,61 @@
 // Core types for the Election Campaign Messaging System
 
+// User types for authentication and access control
+export interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber?: string;
+    username: string;
+    role: UserRole;
+    status: UserStatus;
+    permissions: string[];
+    campaignPermissions: CampaignPermission[];
+    organizationId?: string;
+    managedCampaigns: string[];
+    accessibleCampaigns: string[];
+    profilePicture?: string;
+    timezone: string;
+    language: string;
+    notificationPreferences: UserNotificationPreferences;
+    twoFactorEnabled: boolean;
+    emailVerified: boolean;
+    lastLoginAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface CampaignPermission {
+    campaignId: string;
+    permissions: string[];
+    grantedAt: Date;
+    grantedBy: string;
+}
+
+export interface UserNotificationPreferences {
+    email: boolean;
+    sms: boolean;
+    push: boolean;
+    campaignUpdates: boolean;
+    systemAlerts: boolean;
+}
+
+export enum UserRole {
+    ADMIN = 'admin',
+    CAMPAIGN_MANAGER = 'campaign_manager',
+    CAMPAIGN_ANALYST = 'campaign_analyst',
+    CAMPAIGN_OPERATOR = 'campaign_operator',
+    VIEWER = 'viewer'
+}
+
+export enum UserStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
+    SUSPENDED = 'suspended',
+    PENDING_VERIFICATION = 'pending_verification'
+}
+
 export interface Campaign {
     id: string;
     name: string;
