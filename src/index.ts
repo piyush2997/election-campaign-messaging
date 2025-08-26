@@ -9,6 +9,7 @@ import authRoutes from './routes/auth';
 import dashboardRoutes from './routes/dashboard';
 import voterRoutes from './routes/voters';
 import campaignRoutes from './routes/campaigns';
+import messageRoutes from './routes/messages';
 
 // Initialize environment configuration
 EnvConfig.init();
@@ -55,6 +56,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/voters', voterRoutes);
 app.use('/api/campaigns', campaignRoutes);
+app.use('/api/messages', messageRoutes);
 
 const PORT = EnvConfig.getPort();
 Logger.info(`Environment: ${EnvConfig.getEnvironment()}`);

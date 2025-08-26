@@ -31,6 +31,10 @@ export interface MessageDocument extends Document {
         approved: boolean;                // Translation approved
     }];
 
+    // Template variables for personalization
+    templateVariables: string[];          // Available variables: {{voterName}}, {{constituency}}, etc.
+    defaultVariables: Record<string, string>; // Default values for variables
+
     // Delivery tracking
     status: MessageStatus;                // Draft, Scheduled, Sent, Delivered, Failed
     totalRecipients: number;              // Total number of voters to receive
@@ -163,6 +167,18 @@ const MessageSchema = new Schema({
             default: false
         }
     }],
+
+    // Template variables for personalization
+    templateVariables: [{
+        type: String,
+        trim: true,
+        enum: ['voterName', 'firstName', 'lastName', 'constituency', 'assemblySegment', 'boothNumber', 'age', 'gender', 'occupation', 'customField']
+    }],
+    defaultVariables: {
+        type: Map,
+        of: String,
+        default: {}
+    },
 
     // Delivery tracking
     status: {

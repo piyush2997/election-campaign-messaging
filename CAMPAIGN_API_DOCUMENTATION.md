@@ -535,3 +535,91 @@ curl -X GET "/api/campaigns?status=active&limit=10&page=1" \
 curl -X POST /api/campaigns/<campaign_id>/activate \
   -H "Authorization: Bearer <token>"
 ```
+
+---
+
+## Advanced Features
+
+### Message Integration
+
+The campaign system now supports creating and sending messages directly to campaign audiences:
+
+#### Create Campaign Message
+
+```bash
+curl -X POST /api/campaigns/<campaign_id>/messages \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Important Update",
+    "content": "Your vote matters! Election day is approaching.",
+    "type": "sms",
+    "scheduledDate": "2024-02-01T10:00:00.000Z"
+  }'
+```
+
+#### Send Campaign Message
+
+```bash
+curl -X POST /api/campaigns/<campaign_id>/messages/<message_id>/send \
+  -H "Authorization: Bearer <token>"
+```
+
+### Voter-Campaign Linking
+
+Manage voter assignments to campaigns for targeted messaging:
+
+#### Assign Voters to Campaign
+
+```bash
+curl -X POST /api/campaigns/<campaign_id>/voters/assign \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "voterIds": ["voter_id_1", "voter_id_2", "voter_id_3"],
+    "notes": "Assigned for youth outreach campaign"
+  }'
+```
+
+#### Remove Voters from Campaign
+
+```bash
+curl -X POST /api/campaigns/<campaign_id>/voters/remove \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "voterIds": ["voter_id_1", "voter_id_2"]
+  }'
+```
+
+### Analytics and Performance
+
+Get comprehensive insights into campaign performance:
+
+#### Campaign Analytics
+
+```bash
+curl -X GET /api/campaigns/<campaign_id>/analytics \
+  -H "Authorization: Bearer <token>"
+```
+
+#### Performance Summary
+
+```bash
+curl -X GET /api/campaigns/<campaign_id>/performance \
+  -H "Authorization: Bearer <token>"
+```
+
+## Enhanced Error Codes
+
+| Code                           | Description                                     |
+| ------------------------------ | ----------------------------------------------- |
+| `INACTIVE_CAMPAIGN`            | Cannot perform action on inactive campaign      |
+| `MESSAGE_NOT_FOUND`            | Message not found or doesn't belong to campaign |
+| `INVALID_VOTER_IDS`            | Invalid or empty voter IDs array                |
+| `VOTER_ASSIGNMENT_FAILED`      | Failed to assign voters to campaign             |
+| `VOTER_REMOVAL_FAILED`         | Failed to remove voters from campaign           |
+| `MESSAGE_CREATION_FAILED`      | Failed to create campaign message               |
+| `MESSAGE_SENDING_FAILED`       | Failed to send campaign message                 |
+| `ANALYTICS_RETRIEVAL_FAILED`   | Failed to retrieve campaign analytics           |
+| `PERFORMANCE_RETRIEVAL_FAILED` | Failed to retrieve performance summary          |
