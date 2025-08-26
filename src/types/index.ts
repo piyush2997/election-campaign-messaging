@@ -129,7 +129,9 @@ export enum MessageType {
     EMAIL = 'email',
     SMS = 'sms',
     PUSH_NOTIFICATION = 'push_notification',
-    SOCIAL_MEDIA = 'social_media'
+    SOCIAL_MEDIA = 'social_media',
+    WHATSAPP = 'whatsapp',
+    VOICE = 'voice'
 }
 
 export enum MessageStatus {
@@ -144,7 +146,9 @@ export enum ContactMethod {
     EMAIL = 'email',
     SMS = 'sms',
     PHONE = 'phone',
-    MAIL = 'mail'
+    MAIL = 'mail',
+    WHATSAPP = 'whatsapp',
+    VOICE = 'voice'
 }
 
 export enum ContactStatus {
@@ -154,6 +158,13 @@ export enum ContactStatus {
     READ = 'read',
     FAILED = 'failed',
     OPTED_OUT = 'opted_out'
+}
+
+export enum Language {
+    ENGLISH = 'en',
+    HINDI = 'hi',
+    BHOJPURI = 'bh',
+    MARATHI = 'mr'
 }
 
 export interface ApiResponse<T> {

@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { ContactMethod, ContactStatus } from '../types';
+import { ContactMethod, ContactStatus, Language } from '../types';
 
 // Define the VoterContact document interface for tracking individual contacts
 export interface VoterContactDocument extends Document {
@@ -82,8 +82,8 @@ const VoterContactSchema = new Schema({
     },
     language: {
         type: String,
-        enum: ['en', 'hi', 'te', 'ta', 'bn', 'mr', 'gu', 'kn', 'ml', 'pa', 'or'],
-        default: 'en',
+        enum: Object.values(Language),
+        default: Language.ENGLISH,
         required: true,
         index: true
     },

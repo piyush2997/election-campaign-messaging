@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 import { CampaignStatus } from '../types';
 
 // Define the Campaign document interface
@@ -15,6 +15,17 @@ export interface CampaignDocument extends Document {
     isActive?: boolean;
     createdAt: Date;
     updatedAt: Date;
+
+    // Instance methods
+    activate(): Promise<CampaignDocument>;
+    pause(): Promise<CampaignDocument>;
+    complete(): Promise<CampaignDocument>;
+}
+
+// Define the Campaign model interface with static methods
+export interface CampaignModel extends Model<CampaignDocument> {
+    findActiveCampaigns(): Promise<CampaignDocument[]>;
+    findByTargetAudience(audience: string): Promise<CampaignDocument[]>;
 }
 
 const CampaignSchema = new Schema({
@@ -160,4 +171,4 @@ CampaignSchema.methods.complete = function () {
 };
 
 // Export the model
-export const Campaign = mongoose.model<CampaignDocument>('Campaign', CampaignSchema); 
+export const Campaign = mongoose.model<CampaignDocument, CampaignModel>('Campaign', CampaignSchema); 
